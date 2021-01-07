@@ -100,25 +100,32 @@ $('#login-pass').onchange = $('#login-pass-ok').onclick = () => {
 	})
 }
 
-let lastClickedDesktopIcon = { element: null, time: null }
+let lastClickedDesktopIcon = {}
 
+const unselectDesktopIcons = () => $$('#desktop-icons .icon').forEach(btn => btn.classList.remove('selected'))
+
+$('#desktop-icons').onclick = event => {
+	if (event.target === $('#desktop-icons')) unselectDesktopIcons()
+}
 $$('#desktop-icons .icon').forEach(btn => {
 	btn.onclick = (event) => {
-		if (btn === lastClickedDesktopIcon.element) {
-			if (new Date().getMilliseconds() - lastClickedDesktopIcon.time < 500) {
-				runApplication(btn.dataset.app)
-			} else {
-				btn.dataset.name = prompt('shortcut new name: ', btn.dataset.name)
+		if (!event.ctrlKey) {
+			if (!lastClickedDesktopIcon.ctrl && btn === lastClickedDesktopIcon.element && btn.classList.contains('selected')) {
+				if (new Date() - lastClickedDesktopIcon.time < 500) {
+					runApplication(btn.dataset.app)
+				} else {
+					btn.dataset.name = prompt('Enter shortcut new name', btn.dataset.name) || btn.dataset.name
+				}
 			}
+			unselectDesktopIcons()
 		}
 		lastClickedDesktopIcon.element = btn
-		lastClickedDesktopIcon.time = new Date().getMilliseconds()
-		if (!event.ctrlKey)
-			$$('#desktop-icons .icon').forEach(btn => btn.classList.remove('selected'))
-		btn.classList.add('selected')
+		lastClickedDesktopIcon.time = new Date()
+		lastClickedDesktopIcon.ctrl = event.ctrlKey
+		btn.classList[event.ctrlKey ? 'toggle' : 'add']('selected')
 	}
 })
 
 function runApplication(appName) {
-	// nothing yet!
+	alert(`Running Application ${appName}`)
 }

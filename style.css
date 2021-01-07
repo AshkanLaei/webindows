@@ -26,6 +26,7 @@
 	grid-template-rows: repeat(auto-fit, 120px);
 	grid-auto-flow: column;
 	padding: 5px; gap: 5px;
+	overflow: hidden;
 }
 #desktop-icons .icon {
 	background-color: transparent;
