@@ -34,7 +34,10 @@ document.querySelectorAll('#login-accounts img').forEach(element => {
 		}
 	}).add({
 		targets: '#choosedAccount',
-		opacity: 1
+		opacity: 1,
+		complete: function () {
+			document.getElementById('choosedAccount').style.pointerEvents = 'all'
+		}
 	}, '-=200').add({
 		targets: '#login',
 		background: ['rgba(34, 34, 34, 1)', 'rgba(34, 34, 34, 0)']
@@ -47,6 +50,33 @@ document.querySelectorAll('#login-accounts img').forEach(element => {
 		}
 	}, '-=200').play
 })
+
+document.getElementById('choosedAccount').onclick = () => anime.timeline({
+	easing: 'easeInOutSine',
+	duration: 200
+}).add({
+	targets: '#login-accounts',
+	opacity: [0, 1],
+	complete: function () {
+		document.getElementById('login-accounts').style.pointerEvents = 'all'
+	}
+}).add({
+	targets: '#choosedAccount',
+	opacity: [1, 0],
+	complete: function () {
+		document.getElementById('choosedAccount').style.pointerEvents = 'none'
+	}
+}, '-=200').add({
+	targets: '#login',
+	background: 'rgba(34, 34, 34, 1)'
+}, '-=200').add({
+	targets: ['#login-pass', '#login-pass-ok'],
+	opacity: 0,
+	complete: function () {
+		document.getElementById('login-pass').style.pointerEvents = document.getElementById('login-pass-ok').style.pointerEvents = 'none'
+		document.getElementById('login-pass').blur()
+	}
+}, '-=200')
 
 const srcpass = {
 	'profile1.jpg': 'cAlC',
