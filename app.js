@@ -1,3 +1,5 @@
+const $ = document.querySelector.bind(document), $$ = document.querySelectorAll.bind(document)
+
 anime.timeline({
 	easing: 'easeInOutSine'
 }).add({
@@ -20,7 +22,7 @@ anime.timeline({
 	duration: 200
 }, '-=200')
 
-document.querySelectorAll('#login-accounts img').forEach(element => {
+$$('#login-accounts img').forEach(element => {
 	element.onclick = anime.timeline({
 		easing: 'easeInOutSine',
 		duration: 200,
@@ -29,14 +31,14 @@ document.querySelectorAll('#login-accounts img').forEach(element => {
 		targets: '#login-accounts',
 		opacity: 0,
 		begin: function () {
-			document.getElementById('login-accounts').style.pointerEvents = 'none'
-			document.getElementById('choosedAccount').src = element.src
+			$('#login-accounts').style.pointerEvents = 'none'
+			$('#choosedAccount').src = element.src
 		}
 	}).add({
 		targets: '#choosedAccount',
 		opacity: 1,
 		complete: function () {
-			document.getElementById('choosedAccount').style.pointerEvents = 'all'
+			$('#choosedAccount').style.pointerEvents = 'all'
 		}
 	}, '-=200').add({
 		targets: '#login',
@@ -45,26 +47,26 @@ document.querySelectorAll('#login-accounts img').forEach(element => {
 		targets: ['#login-pass', '#login-pass-ok'],
 		opacity: 1,
 		begin: function () {
-			document.getElementById('login-pass').style.pointerEvents = document.getElementById('login-pass-ok').style.pointerEvents = 'all'
-			document.getElementById('login-pass').focus()
+			$('#login-pass').style.pointerEvents = $('#login-pass-ok').style.pointerEvents = 'all'
+			$('#login-pass').focus()
 		}
 	}, '-=200').play
 })
 
-document.getElementById('choosedAccount').onclick = () => anime.timeline({
+$('#choosedAccount').onclick = () => anime.timeline({
 	easing: 'easeInOutSine',
 	duration: 200
 }).add({
 	targets: '#login-accounts',
 	opacity: [0, 1],
 	complete: function () {
-		document.getElementById('login-accounts').style.pointerEvents = 'all'
+		$('#login-accounts').style.pointerEvents = 'all'
 	}
 }).add({
 	targets: '#choosedAccount',
 	opacity: [1, 0],
 	complete: function () {
-		document.getElementById('choosedAccount').style.pointerEvents = 'none'
+		$('#choosedAccount').style.pointerEvents = 'none'
 	}
 }, '-=200').add({
 	targets: '#login',
@@ -73,8 +75,8 @@ document.getElementById('choosedAccount').onclick = () => anime.timeline({
 	targets: ['#login-pass', '#login-pass-ok'],
 	opacity: 0,
 	complete: function () {
-		document.getElementById('login-pass').style.pointerEvents = document.getElementById('login-pass-ok').style.pointerEvents = 'none'
-		document.getElementById('login-pass').blur()
+		$('#login-pass').style.pointerEvents = $('#login-pass-ok').style.pointerEvents = 'none'
+		$('#login-pass').blur()
 	}
 }, '-=200')
 
@@ -85,15 +87,38 @@ const srcpass = {
 	'profile4.jpg': '%3CH0+TrEE%%*'
 }
 
-document.getElementById('login-pass').onchange = document.getElementById('login-pass-ok').onclick = () => {
-	if (document.getElementById('login-pass').value != srcpass[document.getElementById('choosedAccount').src.split('/').reverse()[0]]) return
+$('#login-pass').onchange = $('#login-pass-ok').onclick = () => {
+	if ($('#login-pass').value != srcpass[$('#choosedAccount').src.split('/').reverse()[0]]) return
 	anime({
 		targets: '#login',
 		opacity: 0,
 		duration: 1000,
 		easing: 'easeInOutSine',
 		complete: function () {
-			document.getElementById('login').style.display = 'none'
+			$('#login').style.display = 'none'
 		}
 	})
+}
+
+let lastClickedDesktopIcon = { element: null, time: null }
+
+$$('#desktop-icons .icon').forEach(btn => {
+	btn.onclick = (event) => {
+		if (btn === lastClickedDesktopIcon.element) {
+			if (new Date().getMilliseconds() - lastClickedDesktopIcon.time < 500) {
+				runApplication(btn.dataset.app)
+			} else {
+				btn.dataset.name = prompt('shortcut new name: ', btn.dataset.name)
+			}
+		}
+		lastClickedDesktopIcon.element = btn
+		lastClickedDesktopIcon.time = new Date().getMilliseconds()
+		if (!event.ctrlKey)
+			$$('#desktop-icons .icon').forEach(btn => btn.classList.remove('selected'))
+		btn.classList.add('selected')
+	}
+})
+
+function runApplication(appName) {
+	// nothing yet!
 }

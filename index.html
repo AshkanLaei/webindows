@@ -7,10 +7,16 @@
 	<link rel="stylesheet" href="style.css">
 	<script src="anime.min.js"></script>
 </head>
-<body>
+<body oncontextmenu="return event.preventDefault() && false">
 	<div id="main">
-		<img src="wallpaper.png" id="desktop-background">
-		<div id="desktop-icons"></div>
+		<img src="wallpaper.png" id="desktop-background" draggable="false">
+		<div id="desktop-icons">
+			<button class="icon" data-app="wine" data-name="windows"><img src="logo.svg"></button>
+			<button class="icon" data-app="wine" data-name="windows"><img src="logo.svg"></button>
+			<button class="icon" data-app="wine" data-name="windows"><img src="logo.svg"></button>
+			<button class="icon" data-app="wine" data-name="windows"><img src="logo.svg"></button>
+			<button class="icon" data-app="wine" data-name="windows"><img src="logo.svg"></button>
+		</div>
 		<div id="window-manager"></div>
 		<div id="taskbar"></div>
 		<div id="startmenu"></div>

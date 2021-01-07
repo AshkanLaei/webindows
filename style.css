@@ -10,15 +10,39 @@
 	-ms-appearance: none;
 	-moz-appearance: none;
 	-webkit-appearance: none;
-}
-#main {
-	height: 100vh;
+	box-sizing: border-box;
 }
 #desktop-background {
-	width: 100vw;
-	height: 100vh;
 	object-fit: cover;
+	position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
 	display: block;
+	z-index: -100;
+}
+#desktop-icons {
+	position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+	z-index: -99;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 100px);
+	grid-template-rows: repeat(auto-fit, 120px);
+	grid-auto-flow: column;
+	padding: 5px; gap: 5px;
+}
+#desktop-icons .icon {
+	background-color: transparent;
+	cursor: pointer;
+}
+#desktop-icons .icon:hover {
+	background-color: #2266ff55;
+	border: 3px solid #2266ff55;
+}
+#desktop-icons .icon.selected {
+	background-color: #2266ff99;
+	border: 3px solid #2266ff55;
+}
+#desktop-icons .icon::after {
+	content: attr(data-name);
+	color: white;
+	font-family: sans-serif;
 }
 #login {
 	position: fixed;
@@ -28,6 +52,7 @@
 	bottom: 0;
 	background-color: #222222;
 	backdrop-filter: blur(50px);
+	-webkit-backdrop-filter: blur(50px);
 	display: flex;
 	justify-content: center;
 	align-items: center;
